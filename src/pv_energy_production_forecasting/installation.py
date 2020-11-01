@@ -18,7 +18,11 @@ class Installation:
 
     def add_to_database(self):
         # Open database
-        database_df = pd.read_csv("installation_database.csv", sep=",", header=0)
+        try:
+            database_df = pd.read_csv("installation_database.csv", sep=",", header=0)
+        except FileNotFoundError:
+            print("ERROR: File installation_database.csv not found")
+            sys.exit(1)
 
         # Check by _id if installation exists in database
         if self._id in database_df.ID.values:
@@ -96,6 +100,32 @@ def drop_id(id):
     database_df.to_csv("id_database.csv", sep=",", index=False)
 
 
+# Function to get from installation_database last used installation
+# Used when the program starts
+# Returns active installation object of class Installation
+def get_last_user():
+    # Open installation_database.csv
+    try:
+        database_df = pd.read_csv("installation_database.csv", sep=",", header=0)
+    except FileNotFoundError:
+        print("ERROR: File installation_database.csv not found")
+        sys.exit(1)
+
+    # Get first (and only) row with "Used" value set as "1"
+    used_row = database_df[database_df["Used"] == 1].iloc[0]
+    # Make Installation class object with attributes from database
+    active_installation = Installation(used_row["ID"],
+                                       used_row["Name"],
+                                       float(used_row["Power[W]"]),
+                                       float(used_row["Azimuth[deg]"]),
+                                       float(used_row["Altitude[deg]"]),
+                                       float(used_row["Longitude"]),
+                                       float(used_row["Latitude"]),
+                                       int(used_row["Used"]))
+    # Return installation object
+    return active_installation
+
+
 """
 def read_installation_database():
     # Open database
@@ -131,6 +161,7 @@ def manage_installation_database():
         input_val_2_1_5 = input("Altitude in degrees: ")
         input_val_2_1_6 = input("Logtitude: ")
         input_val_2_1_7 = input("Latitude: ")
+        # ADD USED------------------------------------------------
 
         installation = Installation(input_val_2_1_1,
                     input_val_2_1_2,
@@ -139,6 +170,7 @@ def manage_installation_database():
                     input_val_2_1_5,
                     input_val_2_1_6,
                     input_val_2_1_7)
+                    #  ADD USED ---------------------------------------
 
         # Add new installation to database
         installation.add_to_database()
