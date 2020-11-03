@@ -3,18 +3,18 @@ import sys
 
 
 class Installation:
-    def __init__(self, _id, name, power, azimuth, altitude, longitude, latitude, _used):
+    def __init__(self, _id, name, power, azimuth, altitude, latitude, longitude, _used):
         self._id = _id  # Unique installation id
         self.name = name  # Installation name
         self.power = power  # Installation power in Watts
         self.azimuth = azimuth  # Azimuth of installation in degrees (Azymut)
         self.altitude = altitude  # Altitude of installation in degrees (Elewacja)
-        self.longitude = longitude  # Longitude of installation (Dl. Geograficzna)
         self.latitude = latitude  # Latitude of installation (Szer. Geograficzna)
+        self.longitude = longitude  # Longitude of installation (Dl. Geograficzna)
         self._used = _used  # Flag that indicates whether the object is currently in use
 
     def get_values(self):
-        return self._id, self.name, self.power, self.azimuth, self.altitude, self.longitude, self.latitude, self._used
+        return self._id, self.name, self.power, self.azimuth, self.altitude, self.latitude, self.longitude, self._used
 
     def add_to_database(self):
         # Open database
@@ -28,8 +28,8 @@ class Installation:
         if self._id in database_df.ID.values:
             # Add values to existing installation
             database_df.loc[database_df["ID"] == self._id,
-            ["Name", "Power[W]", "Azimuth[deg]", "Altitude[deg]", "Longitude", "Latitude", "Used"]] = \
-            [self.name, self.power, self.azimuth, self.altitude, self.longitude, self.latitude, self._used]
+            ["Name", "Power[W]", "Azimuth[deg]", "Altitude[deg]", "Latitude", "Longitude", "Used"]] = \
+            [self.name, self.power, self.azimuth, self.altitude, self.latitude, self.longitude, self._used]
         else:
             # Add new installation with values
             new_installation = {"ID": self._id,
@@ -37,8 +37,8 @@ class Installation:
                                 "Power[W]": self.power,
                                 "Azimuth[deg]": self.azimuth,
                                 "Altitude[deg]": self.altitude,
-                                "Longitude": self.longitude,
                                 "Latitude": self.latitude,
+                                "Longitude": self.longitude,
                                 "Used": self._used}
             database_df = database_df.append(new_installation, ignore_index=True)
 
@@ -85,7 +85,7 @@ def get_id():
 
 
 # Function to change state of ID of deleted object from used ("1") to unused ("0")
-# @param: id - ID of deleted user
+# @params:  id - ID of deleted user
 def drop_id(id):
     # Open id_database
     try:
@@ -119,8 +119,8 @@ def get_last_user():
                                        float(used_row["Power[W]"]),
                                        float(used_row["Azimuth[deg]"]),
                                        float(used_row["Altitude[deg]"]),
-                                       float(used_row["Longitude"]),
                                        float(used_row["Latitude"]),
+                                       float(used_row["Longitude"]),
                                        int(used_row["Used"]))
     # Return installation object
     return active_installation
@@ -159,8 +159,8 @@ def manage_installation_database():
         input_val_2_1_3 = input("Power in Watts: ")
         input_val_2_1_4 = input("Azimuth in degrees: ")
         input_val_2_1_5 = input("Altitude in degrees: ")
-        input_val_2_1_6 = input("Logtitude: ")
-        input_val_2_1_7 = input("Latitude: ")
+        input_val_2_1_6 = input("Latitude: ")
+        input_val_2_1_7 = input("Longitude: ")
         # ADD USED------------------------------------------------
 
         installation = Installation(input_val_2_1_1,
@@ -195,9 +195,9 @@ def manage_installation_database():
                             float(database_df["Power[W]"][int(input_val_2_2)]),
                             float(database_df["Azimuth[deg]"][int(input_val_2_2)]),
                             float(database_df["Altitude[deg]"][int(input_val_2_2)]),
-                            float(database_df["Longitude"][int(input_val_2_2)]),
-                            float(database_df["Latitude"][int(input_val_2_2)]))
-
+                            float(database_df["Latitude"][int(input_val_2_2)]),
+                            float(database_df["Longitude"][int(input_val_2_2)]))
+                            # ADD USED ----------------------------------------------
 
     # If user wants to delete existing installation
     elif input_val_1 == "2":
@@ -218,8 +218,9 @@ def manage_installation_database():
                             float(database_df["Power[W]"][int(input_val_2_3)]),
                             float(database_df["Azimuth[deg]"][int(input_val_2_3)]),
                             float(database_df["Altitude[deg]"][int(input_val_2_3)]),
-                            float(database_df["Longitude"][int(input_val_2_3)]),
-                            float(database_df["Latitude"][int(input_val_2_3)]))
+                            float(database_df["Latitude"][int(input_val_2_3)]),
+                            float(database_df["Longitude"][int(input_val_2_3)]))
+                            # ADD USED -------------------------------------------------
                 # And delete this object from database
                 installation.delete_from_database()
 
