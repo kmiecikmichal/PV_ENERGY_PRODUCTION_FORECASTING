@@ -46,7 +46,9 @@ def get_hourly_forecast(installation, api_data):
     clouds = {}
     temperature = {}
     for entry in hourly_forecast:
+        # Get datetime from timestamp
         date_time = datetime.fromtimestamp(entry["dt"], timezone)
+        # Dict_name[key] = value
         clouds[date_time] = entry["clouds"]
         temperature[date_time] = entry["temp"]
 
