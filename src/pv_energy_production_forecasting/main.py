@@ -7,7 +7,7 @@ if __name__ == "__main__":
     # Welcome in app
     print("Welcome in PV Energy Production Forecast app!")
 
-    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 20, 40, 50.026343, 19.964795,250, 1)
+    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 235, 13, 50.026343, 19.964795,250, 1)
     #Michal.add_to_database()
     #Michal.delete_from_database()
 
@@ -20,6 +20,8 @@ if __name__ == "__main__":
     # Hourly weather forecast for next 48h
     clouds, temperature = weather_forecast.get_hourly_forecast(active_installation, api_data)
 
-    # Get Solar irradiance
-    solar_irr = solar_irradiance.solar_irradiance(active_installation, clouds)
-
+    # Get solar irradiance
+    solar_irr = solar_irradiance.get_solar_irradiance(active_installation, clouds)
+    for element in solar_irr:
+        print(element)
+        print(solar_irr[element])

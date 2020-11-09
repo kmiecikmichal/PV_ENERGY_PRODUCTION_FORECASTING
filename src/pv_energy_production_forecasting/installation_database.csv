@@ -1,2 +1,2 @@
-ID,Name,Power[W],Azimuth[deg],Altitude[deg],Latitude,Longitude,AboveSeaLevel,Used
-U01,Michal,20000,20,40,50.026343,19.964795,250,1
+ID,Name,Power[W],Azimuth[deg],Elevation[deg],Latitude,Longitude,Altitude,Used
+U01,Michal,20000,0,0,50.026343,19.964795,250,1
