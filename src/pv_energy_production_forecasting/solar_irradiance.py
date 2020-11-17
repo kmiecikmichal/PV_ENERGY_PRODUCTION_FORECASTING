@@ -4,10 +4,33 @@ from solarpy import irradiance_on_plane
 from pyephem_sunpath.sunpath import sunpos
 
 
-# Function to return solar irradiance in [W/m^2]
+# Function to return a solar irradiance in [W/m^2]
 # @params:  installation - installation object from class Installation
 #           clouds_dict - dict with datetime and clouds forecast from get_hourly_forecast function
 def get_solar_irradiance(installation, clouds_dict):
+    # Parameters to formula
+    full_clouds_coefficient = 0.25
+    # Get clear sky irradiance
+    clear_sky_irradiance_dict = get_clear_sky_solar_irradiance(installation, clouds_dict)
+    # Get relative insolation dict
+    relative_insolation_dict = get_relative_insolation(clouds_dict)
+    # Solar irradiance dict
+    solar_irradiance_dict = {}
+    # For every element in clouds dict
+    for date_time in clear_sky_irradiance_dict:
+        clear_sky_irradiance = clear_sky_irradiance_dict[date_time]
+        # It's not the safest solution to use first dict's keys to manage second dict, but they have identical keys
+        relative_insolation = relative_insolation_dict[date_time]
+        solar_irradiance = clear_sky_irradiance * (1 - (1 - full_clouds_coefficient) * relative_insolation)
+        solar_irradiance_dict[date_time] = solar_irradiance
+
+    return solar_irradiance_dict
+
+
+# Function to return a clear sky solar irradiance in [W/m^2]
+# @params:  installation - installation object from class Installation
+#           clouds_dict - dict with datetime and clouds forecast from get_hourly_forecast function
+def get_clear_sky_solar_irradiance(installation, clouds_dict):
     # Get horizontal solar irradiation dict
     horizontal_solar_irradiance_dict = get_horizontal_solar_irradiance(installation, clouds_dict)
     # Get sun position dict necessary to get correction factor
@@ -112,3 +135,20 @@ def correction_factor_formula(lat, azi, ele, sun_azi, sun_ele):
     correction_factor = abs((nominator_1 + nominator_2) / denominator)
 
     return correction_factor
+
+
+# Function to calculate relative insolation
+# @params:  clouds_dict - dict with datetime and clouds forecast from get_hourly_forecast function
+def get_relative_insolation(clouds_dict):
+    # Parameters to formula
+    empirical_coefficient = 0.0043   # For Poland
+    # Relative insolation dict
+    relative_insolation_dict = {}
+    # For every element in clouds dict
+    for date_time in clouds_dict:
+        clouds = clouds_dict[date_time]
+        # Relative insolation formula, divided by 100 to not return the result as %, only a fraction
+        relative_insolation = ((100 - clouds) * (1 + empirical_coefficient * clouds) / 100)
+        relative_insolation_dict[date_time] = relative_insolation
+
+    return relative_insolation_dict

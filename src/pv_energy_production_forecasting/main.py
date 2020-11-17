@@ -25,3 +25,4 @@ if __name__ == "__main__":
     for element in solar_irr:
         print(element)
         print(solar_irr[element])
+
