@@ -23,6 +23,7 @@ if __name__ == "__main__":
     # Get solar irradiance
     solar_irr = solar_irradiance.get_solar_irradiance(active_installation, clouds)
     for element in solar_irr:
-        print(element)
-        print(solar_irr[element])
+        print(" DATETIME: ", element)
+        print(" IRRADIANCE: ", solar_irr[element], "W/m^2")
+        print(" CLOUDS: ", clouds[element], "%" "\n")
 

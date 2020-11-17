@@ -9,7 +9,7 @@ from pyephem_sunpath.sunpath import sunpos
 #           clouds_dict - dict with datetime and clouds forecast from get_hourly_forecast function
 def get_solar_irradiance(installation, clouds_dict):
     # Parameters to formula
-    full_clouds_coefficient = 0.25
+    a_coefficient = 0.25
     # Get clear sky irradiance
     clear_sky_irradiance_dict = get_clear_sky_solar_irradiance(installation, clouds_dict)
     # Get relative insolation dict
@@ -21,7 +21,7 @@ def get_solar_irradiance(installation, clouds_dict):
         clear_sky_irradiance = clear_sky_irradiance_dict[date_time]
         # It's not the safest solution to use first dict's keys to manage second dict, but they have identical keys
         relative_insolation = relative_insolation_dict[date_time]
-        solar_irradiance = clear_sky_irradiance * (1 - (1 - full_clouds_coefficient) * relative_insolation)
+        solar_irradiance = clear_sky_irradiance * (a_coefficient + ((1 - a_coefficient) * relative_insolation))
         solar_irradiance_dict[date_time] = solar_irradiance
 
     return solar_irradiance_dict
