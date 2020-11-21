@@ -1,13 +1,14 @@
 import installation
 import weather_forecast
 import solar_irradiance
+import installation_losses
 
 
 if __name__ == "__main__":
     # Welcome in app
     print("Welcome in PV Energy Production Forecast app!")
 
-    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 235, 13, 50.026343, 19.964795,250, 1)
+    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 235, 13, 50.0263, 19.9647, 250, 40, 1)
     #Michal.add_to_database()
     #Michal.delete_from_database()
 
@@ -22,8 +23,11 @@ if __name__ == "__main__":
 
     # Get solar irradiance
     solar_irr = solar_irradiance.get_solar_irradiance(active_installation, clouds)
-    for element in solar_irr:
-        print(" DATETIME: ", element)
-        print(" IRRADIANCE: ", solar_irr[element], "W/m^2")
-        print(" CLOUDS: ", clouds[element], "%" "\n")
+    #for element in solar_irr:
+    #    print(" DATETIME: ", element)
+    #    print(" IRRADIANCE: ", solar_irr[element], "W/m^2")
+    #    print(" CLOUDS: ", clouds[element], "%" "\n")
+
+    # Get pv cell temperature
+    pv_cell_temp = installation_losses.get_pv_cell_temperature(active_installation, temperature, solar_irr)
 

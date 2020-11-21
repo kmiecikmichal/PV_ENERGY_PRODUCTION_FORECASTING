@@ -1,2 +1,2 @@
-ID,Name,Power[W],Azimuth[deg],Elevation[deg],Latitude,Longitude,Altitude,Used
-U01,Michal,20000,55,15,50.026343,19.964795,250,1
+ID,Name,Power[W],Azimuth[deg],Elevation[deg],Latitude,Longitude,Altitude,PVCellTempNOCT[deg.C],Used
+U01,Michal,20000,235,13,50.0263,19.9647,250,40,1
