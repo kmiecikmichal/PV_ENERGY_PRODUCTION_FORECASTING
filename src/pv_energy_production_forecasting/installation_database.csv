@@ -1,2 +1,2 @@
-ID,Name,Power[W],Azimuth[deg],Elevation[deg],Latitude,Longitude,Altitude,PVCellTempNOCT[deg.C],Used
-U01,Michal,20000,235,13,50.0263,19.9647,250,40,1
+ID,Name,Power [W],Azimuth [deg],Elevation [deg],Latitude,Longitude,Altitude [m],Pv Cell Temperature NOCT [deg.C],Temperature Coefficient of Power [%/deg.C],Used
+U01,Michal,20000,235,13,50.0263,19.9647,250,40,-0.4,1

@@ -8,7 +8,7 @@ if __name__ == "__main__":
     # Welcome in app
     print("Welcome in PV Energy Production Forecast app!")
 
-    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 235, 13, 50.0263, 19.9647, 250, 40, 1)
+    #Michal = installation.Installation(installation.get_id(), "Michal", 20000, 235, 13, 50.0263, 19.9647, 250, 40, -0.4, 1)
     #Michal.add_to_database()
     #Michal.delete_from_database()
 
@@ -31,3 +31,6 @@ if __name__ == "__main__":
     # Get pv cell temperature
     pv_cell_temp = installation_losses.get_pv_cell_temperature(active_installation, temperature, solar_irr)
 
+    # Get temperature losses in %
+    temperature_losses = installation_losses.get_temperature_losses(active_installation, pv_cell_temp)
+    print(temperature_losses)
