@@ -41,7 +41,3 @@ def get_temperature_losses(installation, pv_cell_temp_dict):
         temp_losses_dict[date_time] = temp_losses
 
     return temp_losses_dict
-
-
-def temperature_losses_linear_formula():
-    pass
