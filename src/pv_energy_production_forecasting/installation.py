@@ -3,23 +3,31 @@ import sys
 
 
 class Installation:
-    def __init__(self, _id, name, power, azimuth, elevation, latitude, longitude, altitude, pv_cell_temp_noct,
-                 temp_coeff_of_power, _used):
+    def __init__(self, _id, name, installation_power, azimuth, elevation, latitude, longitude, altitude,
+                 pv_cell_temp_noct,temp_coeff_of_current, temp_coeff_of_voltage, nominal_cell_power,
+                 short_circuit_current, open_circuit_voltage, _used):
+
         self._id = _id  # Unique installation id
         self.name = name  # Installation name
-        self.power = power  # Installation power in Watts
+        self.installation_power = installation_power  # Installation power in Watts
         self.azimuth = azimuth  # Azimuth of installation in degrees, deviation from south (S = 0[deg]) (Azymut)
         self.elevation = elevation  # Elevation angle of installation in degrees (Elewacja)
         self.latitude = latitude  # Latitude of installation (Szer. Geograficzna)
         self.longitude = longitude  # Longitude of installation (Dl. Geograficzna)
         self.altitude = altitude  # Altitude- Height above sea level
         self.pv_cell_temp_noct = pv_cell_temp_noct  # Temperature of pv cell NOCT in Celsius degrees.
-        self.temp_coeff_of_power = temp_coeff_of_power  # Temperature Coefficient of Power [%/deg.C]
+        self.temp_coeff_of_current = temp_coeff_of_current  # Temperature Coefficient of Current [%/deg.C]
+        self.temp_coeff_of_voltage = temp_coeff_of_voltage  # Temperature Coefficient of Voltage [%/deg.C]
+        self.nominal_cell_power = nominal_cell_power  # Nominal Power of a pv cell in Watts
+        self.short_circuit_current = short_circuit_current  # Isc - Short Circuit Current [A]
+        self.open_circuit_voltage = open_circuit_voltage  # Voc - Open Circuit Voltage [V]
         self._used = _used  # Flag that indicates whether the object is currently in use
 
     def get_values(self):
-        return self._id, self.name, self.power, self.azimuth, self.elevation, self.latitude, \
-               self.longitude, self.altitude, self.pv_cell_temp_noct, self.temp_coeff_of_power, self._used
+        return self._id, self.name, self.installation_power, self.azimuth, self.elevation, self.latitude, \
+               self.longitude, self.altitude, self.pv_cell_temp_noct, self.temp_coeff_of_current, \
+               self.temp_coeff_of_voltage, self.nominal_cell_power, self.short_circuit_current, \
+               self.open_circuit_voltage, self._used
 
     def add_to_database(self):
         # Open database
@@ -35,20 +43,25 @@ class Installation:
             database_df.loc[database_df["ID"] == self._id,
             ["Name", "Power [W]", "Azimuth [deg]", "Elevation [deg]", "Latitude", "Longitude", "Altitude [m]",
              "Pv Cell Temperature NOCT [deg.C]", "Temperature Coefficient of Power [%/deg.C]", "Used"]] = \
-            [self.name, self.power, self.azimuth, self.elevation, self.latitude, self.longitude, self.altitude,
-             self.pv_cell_temp_noct, self.temp_coeff_of_power, self._used]
+            [self.name, self.installation_power, self.azimuth, self.elevation, self.latitude, self.longitude,
+             self.altitude, self.pv_cell_temp_noct, self.temp_coeff_of_current, self.temp_coeff_of_voltage,
+             self.nominal_cell_power, self.short_circuit_current, self.open_circuit_voltage, self._used]
         else:
             # Add new installation with values
             new_installation = {"ID": self._id,
                                 "Name": self.name,
-                                "Power [W]": self.power,
+                                "Installation Power [W]": self.installation_power,
                                 "Azimuth [deg]": self.azimuth,
                                 "Elevation [deg]": self.elevation,
                                 "Latitude": self.latitude,
                                 "Longitude": self.longitude,
                                 "Altitude [m]": self.altitude,
                                 "Pv Cell Temperature NOCT [deg.C]": self.pv_cell_temp_noct,
-                                "Temperature Coefficient of Power [%/deg.C]": self.temp_coeff_of_power,
+                                "Temperature Coefficient of Current [%/deg.C]": self.temp_coeff_of_current,
+                                "Temperature Coefficient of Voltage [%/deg.C]": self.temp_coeff_of_voltage,
+                                "Nominal Cell Power [W]": self.nominal_cell_power,
+                                "Short Circuit Current [A]": self.short_circuit_current,
+                                "Open Circuit Voltage [V]": self.open_circuit_voltage,
                                 "Used": self._used}
             database_df = database_df.append(new_installation, ignore_index=True)
 
@@ -126,15 +139,20 @@ def get_last_user():
     # Make Installation class object with attributes from database
     active_installation = Installation(used_row["ID"],
                                        used_row["Name"],
-                                       float(used_row["Power [W]"]),
+                                       float(used_row["Installation Power [W]"]),
                                        float(used_row["Azimuth [deg]"]),
                                        float(used_row["Elevation [deg]"]),
                                        float(used_row["Latitude"]),
                                        float(used_row["Longitude"]),
                                        float(used_row["Altitude [m]"]),
                                        float(used_row["Pv Cell Temperature NOCT [deg.C]"]),
-                                       float(used_row["Temperature Coefficient of Power [%/deg.C]"]),
+                                       float(used_row["Temperature Coefficient of Current [%/deg.C]"]),
+                                       float(used_row["Temperature Coefficient of Voltage [%/deg.C]"]),
+                                       float(used_row["Nominal Cell Power [W]"]),
+                                       float(used_row["Short Circuit Current [A]"]),
+                                       float(used_row["Open Circuit Voltage [V]"]),
                                        int(used_row["Used"]))
+
     # Return installation object
     return active_installation
 
@@ -177,6 +195,7 @@ def manage_installation_database():
         # ADD ALTITUDE -------------------------------------
         # ADD TEMP NOCT ------------------------------------
         # ADD TEMP COEFF PMPP --------------------------
+        # ADD ALL THE ATTRIBUTES -------------------------
         # ADD USED------------------------------------------------
 
         installation = Installation(input_val_2_1_1,
@@ -219,6 +238,7 @@ def manage_installation_database():
                             # ADD ALTITUDE -----------------------------------
                             # ADD TEMP NOCT ------------------------------------
                             # ADD TEMP COEFF PMPP --------------------------
+                            # ADD ALL THE ATTRIBUTES -------------------------
                             # ADD USED ----------------------------------------------
 
     # If user wants to delete existing installation
@@ -245,6 +265,7 @@ def manage_installation_database():
                             # ADD ALTITUDE --------------------------------------
                             # ADD TEMP NOCT ------------------------------------
                             # ADD TEMP COEFF PMPP --------------------------
+                            # ADD ALL THE ATTRIBUTES -------------------------
                             # ADD USED -------------------------------------------------
                 # And delete this object from database
                 installation.delete_from_database()

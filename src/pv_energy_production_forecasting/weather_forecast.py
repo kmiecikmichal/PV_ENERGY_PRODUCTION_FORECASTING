@@ -55,7 +55,7 @@ def get_hourly_forecast(installation, api_data):
     return clouds, temperature
 
 
-# Function to get timezone object from pytz and timezonef inder library
+# Function to get timezone object from pytz and timezone finder library
 # @params:  installation - installation object from class Installation
 def get_timezone(installation):
     # Get latitude and longitude from object
