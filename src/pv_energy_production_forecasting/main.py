@@ -1,7 +1,6 @@
 import installation
-import weather_forecast
-import solar_irradiance
-import installation_losses
+import data_visualisation
+import production_calculation
 
 
 if __name__ == "__main__":
@@ -16,19 +15,8 @@ if __name__ == "__main__":
     active_installation = installation.get_last_user()
     print(active_installation.get_values())
 
-    # Data from Open Weather API
-    api_data = weather_forecast.get_api_data(active_installation)
-    # Hourly weather forecast for next 48h
-    clouds, temperature = weather_forecast.get_hourly_forecast(active_installation, api_data)
+    # Get production calculation dict (keys: datetime objects, values: momentary power forecasts
+    production_forecast = production_calculation.production_calculation(active_installation)
 
-    # Get solar irradiance
-    solar_irr = solar_irradiance.get_solar_irradiance(active_installation, clouds)
-
-    # Get temp and irradiance losses
-    inst_efficiency = installation_losses.get_installation_efficiency(active_installation, temperature, solar_irr)
-
-    for element in solar_irr:
-        print(" DATETIME: ", element)
-        print(" IRRADIANCE: ", solar_irr[element], "W/m^2")
-        print(" CLOUDS: ", clouds[element], "%")
-        print(" INSTALLATION EFFICIENCY: ", inst_efficiency[element], "\n")
+    # Visualise the data
+    data_visualisation.momentary_power_visualisation(production_forecast)
