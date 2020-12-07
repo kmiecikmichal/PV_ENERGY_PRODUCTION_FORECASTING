@@ -20,11 +20,24 @@ def production_calculation(active_installation):
     # Get temp and irradiance losses
     inst_efficiency = installation_losses.get_installation_efficiency(active_installation, temperature, solar_irr)
 
-    # Momentary power forecasts dict
-    production_forecast_dict = {}
-    for element in inst_efficiency:
-        # Calculate momentary power production forecast
-        production_forecast = active_installation.installation_power * inst_efficiency[element]
-        production_forecast_dict[element] = production_forecast
+    # Momentary power forecast dict
+    power_production_forecast_dict = {}
+    # Energy production forecast dict
+    energy_production_forecast_dict = {}
+    # Initialize energy production forecast variable (used in loop)
+    energy_production_forecast = 0
 
-    return production_forecast_dict
+    for element in inst_efficiency:
+        # Calculate power production forecast
+        power_production_forecast = active_installation.installation_power * inst_efficiency[element]
+        # Calculate energy production forecasts (reset value when no production)
+        if power_production_forecast != 0:
+            # Adding power production because it's hourly forecast (kW -> kWh)
+            energy_production_forecast += power_production_forecast
+        else:
+            energy_production_forecast = 0
+        # Pack these values into dicts
+        power_production_forecast_dict[element] = power_production_forecast
+        energy_production_forecast_dict[element] = energy_production_forecast
+
+    return power_production_forecast_dict, energy_production_forecast_dict
