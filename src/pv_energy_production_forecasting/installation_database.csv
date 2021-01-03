@@ -1,2 +1,3 @@
 ID,Name,Installation Power [kW],Azimuth [deg],Elevation [deg],Latitude,Longitude,Altitude [m],Pv Cell Temperature NOCT [deg.C],Temperature Coefficient of Current [%/deg.C],Temperature Coefficient of Voltage [%/deg.C],Nominal Cell Power [W],Short Circuit Current [A],Open Circuit Voltage [V],Used
-U01,Michal,20,55,15,50.0263,19.9647,250,40,0.05,-0.33,4.53,9.15,0.636,1
+U01,Test installation,6.175,20,20,50.0223,19.9999,221,43,0.04,-0.35,325,10.10,40.36,1
+U02,Test 2,1.175,20,20,50.0223,19.9999,221,43,0.04,-0.35,325,10.10,40.36,0

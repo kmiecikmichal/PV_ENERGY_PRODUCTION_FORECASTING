@@ -14,8 +14,7 @@ def get_installation_efficiency(installation, temp_dict, solar_irradiance_dict):
     # Some estimated constant losses
     cables_loss = 0.01
     inverter_loss = 0.025
-    power_transformer_loss = 0.015
-    total_constant_loss = cables_loss + inverter_loss + power_transformer_loss
+    total_constant_loss = cables_loss + inverter_loss
     # Installation efficiency dict
     inst_efficiency_dict = {}
     for date_time in temp_irr_efficiency_dict:
@@ -123,8 +122,13 @@ def get_open_circuit_voltage(installation, pv_cell_temp_dict, solar_irradiance_d
         if irradiance / irradiance_stc > 0:
             v_oc = v_oc_stc * (1 + ((temp_coeff_of_voltage / 100) * temp_difference) + irr_corr_factor
                                * math.log(irradiance / irradiance_stc))
+            # Because extremely small numbers can cause big issues inside logarithm function,
+            # for example negative values of v_oc
+            if v_oc < 0:
+                v_oc = 0
         else:
             v_oc = 0.0
+
         v_oc_dict[date_time] = v_oc
 
     return v_oc_dict

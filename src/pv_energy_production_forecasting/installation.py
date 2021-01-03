@@ -160,8 +160,7 @@ def get_last_user():
     return active_installation
 
 
-"""
-def read_installation_database():
+def get_installation_database():
     # Open database
     try:
         database_df = pd.read_csv("installation_database.csv", sep=",", header=0) 
@@ -171,9 +170,11 @@ def read_installation_database():
 
     # Make a dict from ID and Name and return it
     database_dict = database_df.set_index("ID")["Name"].to_dict()
-    return database_df, database_dict
+
+    return database_dict
 
 
+"""
 def manage_installation_database():
     # Take dict with {ID: Name} from database
     database_df, database_dict = read_installation_database()

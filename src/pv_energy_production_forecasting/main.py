@@ -18,3 +18,4 @@ if __name__ == "__main__":
     # Get production calculation dict (keys: datetime objects, values: momentary power forecasts
     production_forecast = production_calculation.production_calculation(active_installation)
 
+

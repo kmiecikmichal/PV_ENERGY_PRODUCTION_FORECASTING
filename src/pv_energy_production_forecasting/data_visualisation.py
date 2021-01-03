@@ -5,9 +5,9 @@ from scipy.interpolate import pchip
 import numpy as np
 
 
-# Function to visualise momentary power forecasts
+# Function to visualise momentary power and energy production forecasts
 # @params:  production_calculation_dict - dictionary with forecasted production
-def momentary_power_visualisation(timezone, power_production_forecast_dict, energy_production_forecast_dict):
+def visualisation(timezone, power_production_forecast_dict, energy_production_forecast_dict):
     # Set proper matplotlib timezone
     matplotlib.rcParams['timezone'] = timezone
 
