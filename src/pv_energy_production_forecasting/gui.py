@@ -3,7 +3,6 @@ import data_visualisation
 import production_calculation
 import weather_forecast
 
-import tkinter.ttk as ttk
 
 import tkinter as tk
 from matplotlib.backends._backend_tk import NavigationToolbar2Tk
@@ -78,19 +77,25 @@ class PageTwo(tk.Frame):
         # Table
         # Get dict with installation ids and names
         installation_database_dict = installation.get_installation_database()
-        # Transform installation database dict to lists
-        installation_id_list = []
-        installation_name_list = []
+        # Transform installation database dict to list
+        installation_list = []
         for installation_id in installation_database_dict:
             installation_name = installation_database_dict[installation_id]
-            installation_name_list.append(installation_name)
-            installation_id_list.append(installation_id)
+            installation_list.append([installation_id, installation_name])
 
-        list_label = tk.Listbox(self)
+        list_label = tk.Listbox(self, font=font_button)
 
-        for item in installation_name_list:
-            list_label.insert('end', item)
+        for item in installation_list:
+            list_label.insert("end", item)
         list_label.pack()
+
+        # Switch installation
+        def switch_installation():
+            value = list_label.get(list_label.curselection())
+            installation.set_active_user(value)
+            master.switch_frame(StartPage)
+
+        tk.Button(self, text="Apply", font=font_button, command=switch_installation).pack(pady=5)
 
 
 if __name__ == "__main__":

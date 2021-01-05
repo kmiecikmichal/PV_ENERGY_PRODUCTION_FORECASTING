@@ -160,6 +160,34 @@ def get_last_user():
     return active_installation
 
 
+# Function to set as active, user chosen in GUI from installation_database
+# @params:  sel_installation - list with id and name of installation selected by user in listbox
+def set_active_user(selected_installation):
+    # Open installation_database.csv
+    try:
+        database_df = pd.read_csv("installation_database.csv", sep=",", header=0)
+    except FileNotFoundError:
+        print("ERROR: File installation_database.csv not found")
+        sys.exit(1)
+
+    # Get dataframe object row with selected installation
+    selected_installation_df = database_df.loc[(database_df["ID"] == selected_installation[0]) &
+                                               (database_df["Name"] == selected_installation[1])]
+
+    # Check if selected installation exists in database
+    if selected_installation_df.empty:
+        print("ERROR: Selected installation does not exist in database")
+
+    # Clear all "Used" flags
+    database_df.loc[database_df["Used"], ["Used"]] = 0
+    # Set "Used" value as "1" in selected row
+    database_df.loc[(database_df["ID"] == selected_installation[0]) &
+                    (database_df["Name"] == selected_installation[1]), ["Used"]] = 1
+
+    # Save id_database file
+    database_df.to_csv("installation_database.csv", sep=",", index=False)
+
+
 def get_installation_database():
     # Open database
     try:
