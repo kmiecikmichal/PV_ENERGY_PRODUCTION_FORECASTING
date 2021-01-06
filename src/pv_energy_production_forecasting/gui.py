@@ -28,14 +28,16 @@ class StartPage(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         tk.Frame.configure(self)
+        master.configure(bg="white")
+        self.configure(bg="white")
         # Get active installation object
         active_installation = installation.get_last_user()
 
-        tk.Label(self, text="Active installation:\n" + active_installation.name,
+        tk.Label(self, text="Active installation:\n" + active_installation.name, bg="white",
                  font=font_header).pack(side="top", fill="x", pady=20)
-        tk.Button(self, text="Forecast", font=font_button,
+        tk.Button(self, text="Forecast", font=font_button, bg="white",
                   command=lambda: master.switch_frame(PageOne)).pack(pady=5)
-        tk.Button(self, text="Switch installation", font=font_button,
+        tk.Button(self, text="Switch installation", font=font_button, bg="white",
                   command=lambda: master.switch_frame(PageTwo)).pack(pady=5)
 
 
@@ -43,8 +45,7 @@ class PageOne(tk.Frame):
     def __init__(self, master):
         tk.Frame.__init__(self, master)
         tk.Frame.configure(self, bg="white")
-
-        tk.Button(self, text="Back", font=font_button,
+        tk.Button(self, text="Back", font=font_button, bg="white",
                   command=lambda: master.switch_frame(StartPage)).pack(side="bottom", pady=10)
 
         # VISUALISE DATA
@@ -62,6 +63,7 @@ class PageOne(tk.Frame):
         canvas.get_tk_widget().pack()
         # Add matplotlib toolbar to figure
         toolbar = NavigationToolbar2Tk(canvas, self)
+        toolbar.config(bg="white")
         toolbar.update()
         canvas.tkcanvas.pack()
 
@@ -71,8 +73,6 @@ class PageTwo(tk.Frame):
         tk.Frame.__init__(self, master)
         tk.Frame.configure(self, bg='white')
         tk.Label(self, text="Switch installation", font=font_header, bg="white").pack(side="top", fill="x", pady=5)
-        tk.Button(self, text="Back", font=font_button,
-                  command=lambda: master.switch_frame(StartPage)).pack(pady=5)
 
         # Table
         # Get dict with installation ids and names
@@ -95,7 +95,10 @@ class PageTwo(tk.Frame):
             installation.set_active_user(value)
             master.switch_frame(StartPage)
 
-        tk.Button(self, text="Apply", font=font_button, command=switch_installation).pack(pady=5)
+        tk.Button(self, text="Back", font=font_button, bg="white",
+                  command=lambda: master.switch_frame(StartPage)).pack(pady=10, side=tk.LEFT)
+        tk.Button(self, text="Apply", font=font_button, bg="white",
+                  command=switch_installation).pack(pady=10, side=tk.RIGHT)
 
 
 if __name__ == "__main__":

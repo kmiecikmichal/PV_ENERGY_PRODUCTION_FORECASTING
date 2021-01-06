@@ -70,7 +70,7 @@ class Installation:
 
         # Save this list to csv file named installation_database
         database_df.to_csv("installation_database.csv", sep=",", index=False)
-        print(database_df)  ########################################################################## TEMPORARY PRINT
+
 
     def delete_from_database(self):
         # Open database
@@ -83,11 +83,10 @@ class Installation:
             # Change state of ID of deleted object from used ("1") to unused ("0")
             drop_id(self._id)
         else:
-            print("ERROR: installation does not exist in database")  ###################### Zmienić na try except może
+            print("ERROR: installation does not exist in database")
 
         # Save this list to csv file named installation_database
         database_df.to_csv("installation_database.csv", sep=",", index=False)
-        print(database_df)  ######################################################################### TEMPORARY PRINT
 
 
 # Function to get unused ID from id_database and set it as an attribute of Installation class object
@@ -200,108 +199,3 @@ def get_installation_database():
     database_dict = database_df.set_index("ID")["Name"].to_dict()
 
     return database_dict
-
-
-"""
-def manage_installation_database():
-    # Take dict with {ID: Name} from database
-    database_df, database_dict = read_installation_database()
-
-    # Ask user if he wants to use existing installation or make new one
-    print("If you want to add new account, press 0")
-    print("If you want to use existing account, press 1")
-    print("If you want to delete existing account, press 2")
-    input_val_1 = input("Enter your value: ")
-
-    # If user wants to add new installation:
-    if input_val_1 == "0":
-        print("New account creator")
-        # Enter needed values to make a installation object from class Installation
-        input_val_2_1_1 = input("Installation ID [Uxx]: ")
-        input_val_2_1_2 = input("Installation Name: ")
-        input_val_2_1_3 = input("Power in Watts: ")
-        input_val_2_1_4 = input("Azimuth in degrees: ")
-        input_val_2_1_5 = input("Elevation in degrees: ")
-        input_val_2_1_6 = input("Latitude: ")
-        input_val_2_1_7 = input("Longitude: ")
-        # ADD ALTITUDE -------------------------------------
-        # ADD TEMP NOCT ------------------------------------
-        # ADD TEMP COEFF PMPP --------------------------
-        # ADD ALL THE ATTRIBUTES -------------------------
-        # ADD USED------------------------------------------------
-
-        installation = Installation(input_val_2_1_1,
-                    input_val_2_1_2,
-                    input_val_2_1_3,
-                    input_val_2_1_4,
-                    input_val_2_1_5,
-                    input_val_2_1_6,
-                    input_val_2_1_7)
-                    # ADD ALTITUDE  ----------------------------
-                    # ADD TEMP NOCT ------------------------------------
-                    # ADD TEMP COEFF PMPP --------------------------
-                    # ADD USED ---------------------------------------
-
-        # Add new installation to database
-        installation.add_to_database()
-
-
-    # If user wants to use existing installation
-    elif input_val_1 == "1":
-        # If database is empty, warn about it
-        if not bool(database_dict):
-            print("ERROR: Database is empty")
-        else:
-            # Ask user which one he wants to choose
-            print("Press number with installation you want to choose. If you want to cancel, press 'c'")
-            # Print dict with available installations
-            for i in enumerate(database_dict.items()):
-                print(i)
-            input_val_2_2 = input("Enter your value: ")
-            # If not cancel, make an object from class Installation
-            if input_val_2_2 != "c":
-                installation = Installation(database_df["ID"][int(input_val_2_2)],
-                            database_df["Name"][int(input_val_2_2)],
-                            float(database_df["Power[W]"][int(input_val_2_2)]),
-                            float(database_df["Azimuth[deg]"][int(input_val_2_2)]),
-                            float(database_df["Elevation[deg]"][int(input_val_2_2)]),
-                            float(database_df["Latitude"][int(input_val_2_2)]),
-                            float(database_df["Longitude"][int(input_val_2_2)]))
-                            # ADD ALTITUDE -----------------------------------
-                            # ADD TEMP NOCT ------------------------------------
-                            # ADD TEMP COEFF PMPP --------------------------
-                            # ADD ALL THE ATTRIBUTES -------------------------
-                            # ADD USED ----------------------------------------------
-
-    # If user wants to delete existing installation
-    elif input_val_1 == "2":
-        # If database is empty, warn about it
-        if not bool(database_dict):
-            print("ERROR: Database is empty")
-        else:
-            # Ask user which one he wants to delete
-            print("Press number with installation you want to delete. If you want to cancel, press 'c'")
-            # Print dict with available installations
-            for i in enumerate(database_dict.items()):
-                print(i)
-            input_val_2_3 = input("Enter your value: ")
-            # If not cancel, make an object from class Installation
-            if input_val_2_3 != "c":
-                installation = Installation(database_df["ID"][int(input_val_2_3)],
-                            database_df["Name"][int(input_val_2_3)],
-                            float(database_df["Power[W]"][int(input_val_2_3)]),
-                            float(database_df["Azimuth[deg]"][int(input_val_2_3)]),
-                            float(database_df["Elevation[deg]"][int(input_val_2_3)]),
-                            float(database_df["Latitude"][int(input_val_2_3)]),
-                            float(database_df["Longitude"][int(input_val_2_3)]))
-                            # ADD ALTITUDE --------------------------------------
-                            # ADD TEMP NOCT ------------------------------------
-                            # ADD TEMP COEFF PMPP --------------------------
-                            # ADD ALL THE ATTRIBUTES -------------------------
-                            # ADD USED -------------------------------------------------
-                # And delete this object from database
-                installation.delete_from_database()
-
-    else:
-        print("ERROR: Unrecognized value input_val_1")
-"""
